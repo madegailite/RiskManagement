@@ -1,0 +1,32 @@
+###
+# This file configures the project "Piper" pipeline of your project.
+# For a reference of the configuration concept and available options, please have a look into its documentation.
+#
+# The documentation for the most recent pipeline version can always be found at:
+#    https://sap.github.io/jenkins-library/
+#
+# This is a YAML-file. YAML is an indentation-sensitive file format. Please make sure to properly indent changes to it.
+###
+---
+general:
+  pipeline: "sap-cloud-sdk"
+  buildTool: "mta"
+stages:
+  Build:
+    mavenExecuteStaticCodeChecks: false
+    npmExecuteLint: false
+  Additional Unit Tests:
+    npmExecuteScripts: false
+    karmaExecuteTests: false
+  Release:
+    cloudFoundryDeploy: true
+    cfApiEndpoint: https://api.cf.us10-001.hana.ondemand.com
+    cfOrg: "60431347trial"
+    cfSpace: "dev"
+    cfCredentialsId: "cfdeploy"
+    tmsUpload: false
+steps:
+  artifactPrepareVersion:
+    versioningType: "cloud_noTag"
+  cloudFoundryDeploy:
+    mtaDeployParameters: "-f --version-rule ALL"
